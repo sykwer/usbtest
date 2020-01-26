@@ -27,6 +27,23 @@ initial begin
   WR_N = 1;
   mode_CLK_cycle <= MODE_IDLE;
   read_buffer = 0;
+  write_buffer = 16'b1010101010101010;
+  data_ready = 0;
+end
+
+always @(negedge CLK) begin
+  if (!TXE_N) begin
+    WR_N = 0;
+  end
+end
+
+/*
+initial begin
+  OE_N = 1;
+  RD_N = 1;
+  WR_N = 1;
+  mode_CLK_cycle <= MODE_IDLE;
+  read_buffer = 0;
   write_buffer = 0;
   data_ready = 0;
 end
@@ -74,6 +91,7 @@ always @(negedge CLK) begin
     end
     // Write cycle to here
 end
+*/
 
 assign DATA = OE_N ? write_buffer : 16'bZ;
 assign BE = OE_N ? 2'b11 : 2'bZ;

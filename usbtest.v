@@ -23,6 +23,9 @@ output reg [6:0] counter;
 output hoge;
 
 initial begin
+  OE_N = 1;
+  RD_N = 1;
+  WR_N = 1;
   mode_CLK_cycle <= MODE_IDLE;
   read_buffer = 0;
   write_buffer = 0;

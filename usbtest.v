@@ -1,5 +1,6 @@
 module usbtest(
            CLK, TXE_N, RXF_N, OE_N, RD_N, WR_N, DATA, BE,
+           counter, hoge,
        );
 localparam MODE_IDLE = 0;
 localparam MODE_WILL_OE_N_DOWN = 1;
@@ -18,11 +19,15 @@ reg [15:0] write_buffer;
 reg data_ready;
 reg [4:0] mode_CLK_cycle;
 
+output reg [6:0] counter;
+output hoge;
+
 initial begin
   mode_CLK_cycle <= MODE_IDLE;
   read_buffer = 0;
   write_buffer = 0;
   data_ready = 0;
+  counter = 0;
 end
 
 always @(negedge CLK) begin
@@ -50,6 +55,7 @@ always @(negedge CLK) begin
 
     if (mode_CLK_cycle == MODE_READING_DATA) begin
         read_buffer <= DATA;
+        counter <= counter + 1;
         data_ready <= 1;
         mode_CLK_cycle <= MODE_AFTER_READING;
     end
@@ -71,4 +77,5 @@ end
 
 assign DATA = OE_N ? write_buffer : 16'bZ;
 assign BE = OE_N ? 2'b11 : 2'bZ;
+assign hoge = 1;
 endmodule
